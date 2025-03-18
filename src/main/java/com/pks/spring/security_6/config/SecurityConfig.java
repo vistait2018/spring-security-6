@@ -24,10 +24,10 @@ public class SecurityConfig {
                 .csrf(csrf->csrf.disable())// TO DISABLE csrf->csrf.disabled or Customizer.withDefaults()
                 .authorizeHttpRequests(
                         request->request
-                                .requestMatchers("register").permitAll()
+                                .requestMatchers("register","login").permitAll()
                                 .anyRequest().authenticated()
                 )//authenticate all request
-                .formLogin(Customizer.withDefaults()) //use form login
+                //.formLogin(Customizer.withDefaults()) //use form login
                 .httpBasic(Customizer.withDefaults());//use basic login
     return http.build();
 
