@@ -1,10 +1,10 @@
 package com.pks.spring.security_6.controller;
 
 
-import com.pks.spring.security_6.UserRepository;
 import com.pks.spring.security_6.entity.User;
 import com.pks.spring.security_6.model.CreateUserModel;
 import com.pks.spring.security_6.model.LoginModel;
+import com.pks.spring.security_6.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,29 +14,21 @@ import java.util.Objects;
 @RestController
 public class UserController {
     
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/register")
     public User register(@RequestBody CreateUserModel createUser){
-        User userToSave = User
-                .builder()
-                .email(createUser.getEmail())
-                .password(createUser.getPassword())
-                .build();
+          return userService.register(createUser);
 
-        return userRepository.save(userToSave);
     }
 
 
     @PostMapping("/login")
     public String login(@RequestBody LoginModel loginModel){
-        User userExists = userRepository.findByEmail(loginModel.getEmail());
-      if(Objects.isNull(userExists))
-          return "error";
-      else return "success";
+       return userService.login(loginModel);
     }
 }
