@@ -21,9 +21,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http) throws Exception {
         http
-                .csrf(Customizer.withDefaults())// TO DISABLE csrf->csrf.disabled
+                .csrf(csrf->csrf.disable())// TO DISABLE csrf->csrf.disabled or Customizer.withDefaults()
                 .authorizeHttpRequests(
-                        request->request.anyRequest().authenticated()
+                        request->request
+                                .requestMatchers("register").permitAll()
+                                .anyRequest().authenticated()
                 )//authenticate all request
                 .formLogin(Customizer.withDefaults()) //use form login
                 .httpBasic(Customizer.withDefaults());//use basic login
