@@ -11,8 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -20,11 +18,14 @@ public class UserService {
 
     private final AuthenticationManager authenticationManager;
 
+    private final JWTService jwtService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
 
@@ -45,7 +46,7 @@ public class UserService {
         // User userExists = userRepository.findByEmail(loginModel.getEmail());
         if(!authenticate.isAuthenticated())
             return "error";
-        else return "23334341232321345dfvfvbgfge34t4534233434343434";
+        else return jwtService.generateToken(loginModel);
     }
 
 
